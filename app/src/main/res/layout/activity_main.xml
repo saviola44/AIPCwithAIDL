@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mariusz.zabawa.MainActivity">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="wprowadz tekst"
+        android:id="@+id/ETtext"
+        android:layout_alignParentTop="true"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/ETInt"
+        android:hint="0"
+        android:layout_below="@id/ETtext"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="wyslij do usługi"
+        android:id="@+id/sendServicebtn"
+        android:layout_below="@id/ETInt"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="uruchom udługe"
+        android:id="@+id/newServicebtn"
+        android:layout_below="@id/sendServicebtn"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="zakoncz usluge"
+        android:id="@+id/endServicebtn"
+        android:layout_below="@id/newServicebtn"/>
+
+</RelativeLayout>
