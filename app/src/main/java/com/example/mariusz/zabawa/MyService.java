@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class MyService extends Service {
     int licznik=0;
+    AIDLCallback callback;
     public MyService() {
     }
 
@@ -28,17 +29,28 @@ public class MyService extends Service {
 
         @Override
         public void displayParcel(MessageParcel m) throws RemoteException {
-            Log.d("MYService", "displayParcel method");
+            Log.d("MYService", "displayParcel method, przekierowanie do metody displayData");
             displayData(m);
+        }
+
+        @Override
+        public void addCallback(AIDLCallback c) throws RemoteException {
+            callback = c;
+            Log.d("MYService", "addCallback w usłudze, dodano Callback");
         }
     };
 
 
     public void displayData(MessageParcel m){
         Log.d("MYService", "metoda display Data: " + m.getMessage1() + " " + m.getMessageInt());
-        //ponizsze nie zadziala bo trzeba Callbacka jeszcze zrobic, bo tak nie da rady w IPC wywolac
-        /*Toast.makeText(getApplicationContext(),m.getMessage1() + " " + m.getMessageInt(),
-                Toast.LENGTH_LONG).show();*/
+        Log.d("MYService", "displayData: teraz wysle wiadomosc do aktywnosci");
+        m.setMessage1(m.getMessage1() + "napis dopisany przez usługe");
+        m.setMessageInt(123456);
+        try {
+            callback.displayResponseFromService(m);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 

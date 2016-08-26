@@ -22,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             myAIDLService = MyAIDLAPIV1.Stub.asInterface(iBinder);
-
-            //myService = ((MyService.LocalBinder)iBinder).getService();
-            //int x = ((MyService.LocalBinder)iBinder).getZero();
+            try {
+                Log.d("MYService", "onServiceConnected: przed wywołaniem metody addCallback usługi");
+                myAIDLService.addCallback(callback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             myAIDLService = null;
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +68,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "wysyłam dane do usługi", Toast.LENGTH_LONG).show();
                 Log.d("MYService", "onClick, wysylam dane do usługi");
+                
                 MessageParcel m = new MessageParcel("jakas wiadomosc", 321);
                 try {
-                    myAIDLService.sayHello();
+                    //myAIDLService.sayHello();
                     myAIDLService.displayParcel(m);
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -74,4 +79,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    AIDLCallback.Stub callback = new AIDLCallback.Stub() {
+        @Override
+        public void displayResponseFromService(MessageParcel m) throws RemoteException {
+            Log.d("MYService", "displayResponseFromService metoda w aktywnosci, dane w obiekcie:");
+            Log.d("MYService", m.getMessage1() + " " + m.getMessageInt());
+        }
+    };
+
 }
